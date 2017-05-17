@@ -121,8 +121,6 @@ public List<Author> getCoautori (AuthorIdMap authorIdMap, Author a) {
 			List <Author> coautori = new ArrayList <>();
 
 			while (rs.next()) {
-
-		//		Author autore = new Author(rs.getInt("authorid"), null, null);
 				Author autore = this.getAutore(rs.getInt("authorid"));
 				autore = authorIdMap.put(autore);
 				coautori.add(autore);
@@ -138,4 +136,35 @@ public List<Author> getCoautori (AuthorIdMap authorIdMap, Author a) {
 			throw new RuntimeException("Errore Db");
 		}
 	}
+
+public List<Paper> getPapersComuni (Author a, Author b) {
+	
+	final String sql = "SELECT DISTINCT eprintid " +
+						"FROM creator " +
+						"WHERE authorid =? AND eprintid IN (SELECT eprintid FROM creator WHERE authorid =?)";
+
+	try {
+		Connection conn = DBConnect.getConnection();
+		PreparedStatement st = conn.prepareStatement(sql);
+		st.setInt(1, a.getId());
+		st.setInt(2, b.getId());
+		
+		ResultSet rs = st.executeQuery();
+		List <Paper> articoli = new ArrayList <>();
+
+		while (rs.next()) {
+			Paper p = new Paper (rs.getInt("eprintid"), null, null,null,null,null);
+			articoli.add(p);
+		}
+
+		rs.close();
+		conn.close();
+		return articoli;
+
+	} catch (SQLException e) {
+		// e.printStackTrace();
+		throw new RuntimeException("Errore Db");
+	}
+}
+
 }

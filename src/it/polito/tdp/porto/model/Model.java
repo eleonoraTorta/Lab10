@@ -1,12 +1,16 @@
 package it.polito.tdp.porto.model;
 
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.jgrapht.Graphs;
 import org.jgrapht.UndirectedGraph;
+import org.jgrapht.alg.DijkstraShortestPath;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.SimpleGraph;
-
 import it.polito.tdp.porto.db.PortoDAO;
 
 public class Model {
@@ -76,6 +80,22 @@ public class Model {
 		}
 		autoriTotali.remove(autore);
 		return autoriTotali;
+	}
+	
+	public List <Paper> trovaSequenza( Author a, Author b){
+		DijkstraShortestPath <Author, DefaultEdge> dsp = new DijkstraShortestPath <Author, DefaultEdge>(this.getGrafo(), a,b);
+		List <DefaultEdge> archi =  dsp.findPathBetween(grafo, a, b);
+		
+	//	Map <Author, Author> autori = new LinkedHashMap <Author, Author>();
+		List<Paper>  articoli = new LinkedList <Paper>();
+		
+
+		for(DefaultEdge d : archi){
+			 Author autore1 = grafo.getEdgeSource(d);
+			 Author autore2 = grafo.getEdgeTarget(d);
+			 articoli.addAll(p.getPapersComuni(autore1, autore2));
+		}
+		return articoli;
 	}
 
 }

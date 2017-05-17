@@ -6,6 +6,7 @@ import java.util.ResourceBundle;
 
 import it.polito.tdp.porto.model.Author;
 import it.polito.tdp.porto.model.Model;
+import it.polito.tdp.porto.model.Paper;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -61,7 +62,18 @@ public class PortoController {
 
     @FXML
     void handleSequenza(ActionEvent event) {
-
+    	txtResult.clear();
+    	model.creaGrafo();
+    	Author a = boxPrimo.getValue();
+    	Author b = boxSecondo.getValue();
+    	if(a == null || b == null){
+    		txtResult.appendText("Selezionare due autori!\n");
+    	}
+    	List <Paper> sequenza = model.trovaSequenza(a, b);
+    	for(Paper p : sequenza){
+    		txtResult.appendText(p + "\n");
+    	}
+    	
     }
 
     @FXML
