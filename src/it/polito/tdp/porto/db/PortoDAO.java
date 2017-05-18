@@ -153,7 +153,7 @@ public List<Paper> getPapersComuni (Author a, Author b) {
 		List <Paper> articoli = new ArrayList <>();
 
 		while (rs.next()) {
-			Paper p = new Paper (rs.getInt("eprintid"), null, null,null,null,null);
+			Paper p =this.getArticolo(rs.getInt("eprintid"));
 			articoli.add(p);
 		}
 

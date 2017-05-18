@@ -63,13 +63,14 @@ public class PortoController {
     @FXML
     void handleSequenza(ActionEvent event) {
     	txtResult.clear();
-    	model.creaGrafo();
+    	
     	Author a = boxPrimo.getValue();
     	Author b = boxSecondo.getValue();
     	if(a == null || b == null){
     		txtResult.appendText("Selezionare due autori!\n");
     	}
     	List <Paper> sequenza = model.trovaSequenza(a, b);
+    	txtResult.appendText("Sequenza di articoli tra gli autori "+ a.getFirstname() + " " + a.getLastname() +" e " + b.getFirstname() + " "+ b.getLastname()+"\n");
     	for(Paper p : sequenza){
     		txtResult.appendText(p + "\n");
     	}
@@ -91,8 +92,12 @@ public class PortoController {
 
 	public void setModel(Model model) {
 		this.model = model;
-		
-		boxPrimo.getItems().addAll(model.getAutori());
+		try{
+			boxPrimo.getItems().addAll(model.getAutori());
+			model.creaGrafo();
+		}catch (RuntimeException e){
+			txtResult.setText(e.getMessage());
+		}
 		
 	}
 }

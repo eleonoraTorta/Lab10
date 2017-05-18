@@ -85,11 +85,7 @@ public class Model {
 	public List <Paper> trovaSequenza( Author a, Author b){
 		DijkstraShortestPath <Author, DefaultEdge> dsp = new DijkstraShortestPath <Author, DefaultEdge>(this.getGrafo(), a,b);
 		List <DefaultEdge> archi =  dsp.findPathBetween(grafo, a, b);
-		
-	//	Map <Author, Author> autori = new LinkedHashMap <Author, Author>();
 		List<Paper>  articoli = new LinkedList <Paper>();
-		
-
 		for(DefaultEdge d : archi){
 			 Author autore1 = grafo.getEdgeSource(d);
 			 Author autore2 = grafo.getEdgeTarget(d);
@@ -97,5 +93,5 @@ public class Model {
 		}
 		return articoli;
 	}
-
+	
 }
